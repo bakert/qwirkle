@@ -3,6 +3,31 @@
 class Tile {
   const USE_ANSI = true;
 
+  private static $allTiles;
+
+  public static function allTiles() {
+    if (!self::$allTiles) {
+      self::$allTiles = [];
+      foreach (Color::colors() as $color) {
+        foreach (Shape::shapes() as $shape) {
+          $tile = new Tile($color, $shape);
+          self::$allTiles[] = $tile;
+          self::$allTiles[] = $tile;
+          self::$allTiles[] = $tile;
+        }
+      }
+    }
+    return self::$allTiles;
+  }
+
+  public static function getTile(Color $color, Shape $shape) {
+    foreach (self::allTiles() as $tile) {
+      if ($tile->color() === $color && $tile->shape() === $shape) {
+        return $tile;
+      }
+    }
+  }
+
   public function __construct(Color $color, Shape $shape) {
     $this->color = $color;
     $this->shape = $shape;
