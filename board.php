@@ -107,6 +107,16 @@ class Board {
     return $score;
   }
 
+  public function tiles() {
+    $tiles = [];
+    foreach ($this->board as $column) {
+      foreach ($column as $tile) {
+        $tiles[] = $tile;
+      }
+    }
+    return $tiles;
+  }
+
   public function __toString() {
     $highest = self::SIZE / 2 - self::MIN_VIEWPORT_SIZE / 2 - 1;
     $lowest = self::SIZE / 2 + self::MIN_VIEWPORT_SIZE / 2 - 1;
