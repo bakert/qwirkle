@@ -43,6 +43,6 @@ class Hand {
     foreach ($this->tiles() as $tile) {
       $a[] = "$tile";
     }
-    return implode(", ", $a);
+    return implode(' ', $a);
   }
 }
