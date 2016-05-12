@@ -1,0 +1,30 @@
+Improvements
+============
+
+- Instead of arbitrarily placing the first longest line when starting, instead decide which would be best in some way.
+- Oldest player goes first in the event of a tie in starting length is not implemented. Instead it is random.
+- We potentially need an untrusted Player class that makes decisions and a trusted Player class that holds hand and score information rather than storing in arrays.
+- Instead of placing lines in arbitrary order for starting move we should place them in a way that favors the rest of our hand.
+- We are currently very trusting of Player that he has the tiles he says he has. We should separate out the stragey and the admin.
+- Starting move is always color-based never shaped-based.
+- You can't use two of the same tile.
+- Algorithm just maximizes points for now, very naive. Need to look at giving away good scoring opportunities, changing tiles, dumping dupes and keeping potentially good tiles as well at least.
+- usefulSets should return pairs, triples, etc. not just single tiles and max tiles sharing a property.
+- When the computer changes letters it should be strategic about it.
+- Nonrandom mode that skips all three shuffles.
+- Don't pass board around inside board at all. Just clone it where necessary.
+- Board->score uses applyWithoutChecks rather than apply. Why are we scoring something that might be illegal? Can we speed up by cutting it earlier?
+- Do you return to the bag then draw? Or set aside and then draw?
+- interface or superclass for Line and Hand?
+- Board->isLegal doesn't check the following things (it relies on Player->move?)
+  * Must have a placement on an adjoining square
+  * Mustn't overlay a tile
+  * All lines formed must be legal
+- A "show thinking" flag that shows the board of every legal move considered.
+  //echo "For $direction $i $point ($tilesHand) ...\n";
+  // echo "Considering move: " . end($moves) . " with a score of " . $board->score(end($moves)) . "\n";
+  // $displayBoard = clone $board;
+  // $displayBoard->applyWithoutChecks(end($moves));
+  // echo $displayBoard;
+  // echo "----------\n";
+  //fgets(STDIN);

@@ -1,0 +1,9 @@
+(c) 2016 Thomas David Baker <bakert@gmail.com>
+
+See LICENSE.
+
+To run:
+
+$ php qwirkle.php
+
+If you don't like the display consider setting Tile::USE_ANSI to false.
