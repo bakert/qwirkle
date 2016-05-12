@@ -28,3 +28,4 @@ Improvements
   // echo $displayBoard;
   // echo "----------\n";
   //fgets(STDIN);
+- Some way to treat colors and shapes as "properties" generally when looking for shared property.
