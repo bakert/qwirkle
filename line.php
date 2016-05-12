@@ -42,6 +42,39 @@ class Line {
     return count($this->placements);
   }
 
+  public function contains($searchTile) {
+    foreach ($this->tiles() as $tile) {
+      if ($tile === $searchTile) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public function sharedProperty() {
+    $sharedProperty = null;
+    foreach (Color::colors() as $color) {
+      foreach ($this->tiles() as $tile) {
+        if ($sharedProperty === null || $sharedProperty === $tile->color()) {
+          $sharedProperty = $tile->color();
+        } else {
+          $sharedProperty = null;
+          break 2;
+        }
+      }
+    }
+    foreach (Shape::shapes() as $shape) {
+      foreach ($this->tiles() as $tile) {
+        if ($sharedProperty === null || $sharedProperty === $tile->shape()) {
+          $sharedProperty = $tile->shape();
+        } else {
+          return null;
+        }
+      }
+    }
+    return $sharedProperty;
+  }
+
   public function __toString() {
     $a = [];
     foreach ($this->placements as $placement) {

@@ -65,15 +65,16 @@ class Player {
     if ($board->isEmpty()) {
       return $this->startingMove($tiles);
     }
+    return $this->chooseMove($tiles, $board, $bagIsEmpty);
+  }
+
+  protected function chooseMove(array $tiles, Board $board, $bagIsEmpty) {
     $usefulSets = $this->usefulSets($tiles);
     list($max, $bestMove) = [0, new Move([])];
     foreach ($usefulSets as $usefulSet) {
       $move = $this->bestMoveWith($usefulSet, $board);
       if ($move) {
-        $score = $board->score($move);
-        if (count($move->placements()) === count($tiles) && $bagIsEmpty) {
-          $score += Score::FINISHING_BONUS;
-        }
+        $score = $this->evaluate($tiles, $move, $board, $bagIsEmpty);
         if ($score > $max) {
           $max = $score;
           $bestMove = $move;
@@ -81,6 +82,14 @@ class Player {
       }
     }
     return $bestMove;
+  }
+
+  protected function evaluate(array $tiles, Move $move, Board $board, $bagIsEmpty) {
+    $score = $board->score($move);
+    if (count($move->placements()) === count($tiles) && $bagIsEmpty) {
+      $score += Score::FINISHING_BONUS;
+    }
+    return $score;
   }
 
   private function usefulSets(array $tiles) {
