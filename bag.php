@@ -1,17 +1,12 @@
 <?php
 
 class Bag {
-  public function __construct() {
-    $this->tiles = [];
-    foreach (Color::colors() as $color) {
-      foreach (Shape::shapes() as $shape) {
-        $tile = new Tile($color, $shape);
-        $this->tiles[] = $tile;
-        $this->tiles[] = $tile;
-        $this->tiles[] = $tile;
-      }
+  public function __construct($tiles = null) {
+    $this->random = $tiles === null;
+    $this->tiles = $tiles === null ? Tile::allTiles() : $tiles;
+    if ($this->random) {
+      $this->shuffle();
     }
-    $this->shuffle();
   }
 
   public function draw($n) {
@@ -28,7 +23,9 @@ class Bag {
 
   public function discard($tiles) {
     $this->tiles = array_merge($this->tiles, $tiles);
-    $this->shuffle();
+    if ($this->random) {
+      $this->shuffle();
+    }
   }
 
   public function isEmpty() {
@@ -36,7 +33,7 @@ class Bag {
   }
 
   private function shuffle() {
-    if (Game::RANDOM) {
+    if ($this->random) {
       shuffle($this->tiles);
     }
   }

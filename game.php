@@ -3,18 +3,19 @@
 class Game {
   const HAND_SIZE = 6;
   const MAX_ROUNDS_WITHOUT_SCORING = 10;
-  const RANDOM = true;
 
-  public function __construct(array $players) {
+  public function __construct(array $players, $tiles = null) {
     Assert::type($players, Player);
     $this->players = $players;
+    $this->random = $tiles === null;
+    $this->tiles = $tiles;
+    if ($this->random) {
+      shuffle($this->players);
+    }
   }
 
   public function go() {
-    if (Game::RANDOM) {
-      shuffle($this->players);
-    }
-    list($event, $bag, $board, $scores) = [new Event(), new Bag(), new Board(), new Scores($this->players)];
+    list($event, $bag, $board, $scores) = [new Event(), new Bag($this->tiles), new Board(), new Scores($this->players)];
     foreach ($this->players as $player) {
       $hand = new Hand($bag->draw(self::HAND_SIZE));
       $player->setHand($hand);
