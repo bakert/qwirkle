@@ -26,51 +26,11 @@ class Board {
     $board = clone $this;
     $board->applyWithoutChecks($move);
     foreach ($move->placements() as $placement) {
-      if (!$this->isLegalPlacement($placement, $board)) {
+      if (!$placement->isLegal($board)) {
         return false;
       }
     }
     return true;
-  }
-
-  private function isLegalPlacement(Placement $placement, Board $board) {
-    $linesFromPlacement = $this->linesFromPlacement($placement, $board);
-    foreach ($linesFromPlacement as $line) {
-      if (!$line->isLegal($line)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private function linesFromPlacement(Placement $placement, Board $board) {
-    list($x, $y) = [$placement->point()->x(), $placement->point()->y()];
-    $lines = [];
-    $lines[] = new Line($this->getHorizontalLine($board, $x, $y));
-    $lines[] = new Line($this->getVerticalLine($board, $x, $y));
-    return $lines;
-  }
-
-  private function getHorizontalLine(Board $board, $x, $y) {
-    return array_merge(array_reverse($this->getPartialLine($board, $x, $y, -1, 0)), $this->getPartialLine($board, $x - 1, $y, 1, 0));
-  }
-
-  private function getVerticalline(Board $board, $x, $y) {
-    return array_merge(array_reverse($this->getPartialLine($board, $x, $y, 0, -1)), $this->getPartialLine($board, $x, $y - 1, 0, 1));
-  }
-
-  private function getPartialLine(Board $board, $x, $y, $xMod, $yMod) {
-    $line = [];
-    while (true) {
-      $x += $xMod;
-      $y += $yMod;
-      $point = new Point($x, $y);
-      if ($board->at($point) === null) {
-        break;
-      }
-      $line[] = new Placement($point, $board->at($point));
-    }
-    return $line;
   }
 
   public function apply(Move $move) {
@@ -134,12 +94,7 @@ class Board {
   public function score(Move $move) {
     $board = clone $this;
     $board->applyWithoutChecks($move);
-    $lines = [];
-    foreach ($move->placements() as $placement) {
-      $linesFromPlacement = $board->linesFromPlacement($placement, $board);
-      $lines = array_merge($lines, $linesFromPlacement);
-    }
-    $lines = array_unique($lines);
+    $lines = $move->lines($board);
     $points = 0;
     foreach ($lines as $line) {
       if ($line->length() === count(Color::colors())) {
