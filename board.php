@@ -38,17 +38,43 @@ class Board {
     if (!$this->isLegal($move)) {
       throw new IllegalMoveException("Cannot place move `{$move}` on board `{$this}`");
     }
-    $this->applyWithoutChecks($move);
+    $this->applyWithoutChecks($move, true);
     return $this->score($move);
   }
 
-  private function applyWithoutChecks(Move $move) {
-    $this->locations = [];
+  private function applyWithoutChecks(Move $move, $updateLocations = false) {
     foreach ($move->placements as $placement) {
+      $this->removeLocation($placement->point());
       list($x, $y) = [$placement->point()->x(), $placement->point()->y()];
       $this->board[$y][$x] = $placement->tile();
     }
+    if ($updateLocations) {
+      foreach ($move->placements as $placement) {
+        foreach ($placement->point()->neighbors() as $point) {
+          if ($this->at($point) === null) {
+            $this->addLocation($point);
+          }
+        }
+      }
+    }
     return $board;
+  }
+
+  private function addLocation(Point $pointToAdd) {
+    foreach ($pointToAdd->neighbors() as $point) {
+      $tile = $this->at($point);
+      if ($tile !== null) {
+        $neighbors[] = $tile;
+      }
+    }
+    $sharedProperties = (new Hand($neighbors))->sharedProperties();
+    if ($sharedProperties !== null) {
+      $this->locations[(string)$pointToAdd] = ['point' => $pointToAdd, 'sharedProperties' => $sharedProperties];
+    }
+  }
+
+  private function removeLocation(Point $point) {
+    unset($this->locations[(string)$point]);
   }
 
   public function at(Point $point) {
@@ -63,27 +89,8 @@ class Board {
   }
 
   public function attachmentLocations() {
-    if ($this->locations) {
-      return $this->locations;
-    }
-    for ($y = 0; $y < count($this->board); $y++) {
-      for ($x = 0; $x < count($this->board[$y]); $x++) {
-        $point = new Point($x, $y);
-        if (!$this->spotTaken($point) && $this->anyAdjacentIsOccupied($point)) {
-          $this->locations[] = $point;
-        }
-      }
-    }
-    return $this->locations;
-  }
-
-  private function anyAdjacentIsOccupied(Point $startPoint) {
-    foreach ($startPoint->adjacents($this) as $point) {
-      if ($this->at($point) !== null) {
-        return true;
-      }
-    }
-    return false;
+    $locations = array_values($this->locations);
+    return $locations;
   }
 
   public function isEmpty() {
