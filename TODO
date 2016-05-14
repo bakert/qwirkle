@@ -23,7 +23,6 @@ Improvements
   // echo "----------\n";
   // fgets(STDIN);
 - Some way to treat colors and shapes as "properties" generally when looking for shared property.
-- Change diamond symbol to 'v' from '^'. The caret gives the illusion of a space. Regen TestGames to get the new symbol.
 - When we introduced the performance improvement of not checking all orderings once a legal move was found we radically changed the outcome of TestGames::FIRST. This implies that the order you place your move in from amongst the available legal moves is important to the outcome. Leaving less opportunity for others and more for yourself should be a consideration of the AI.
 - Can we do something like tryFit for isLegal? Start at the attachment location and work outwards and reject sooner if possible?
 

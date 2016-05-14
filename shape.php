@@ -8,7 +8,7 @@ class Shape {
   private static $star;
   private static $x;
 
-  private static $representations = ['circle' => 'o', 'clover' => '+', 'diamond' => '^', 'square' => '#', 'star' => '*', 'x' => 'x'];
+  private static $representations = ['circle' => 'o', 'clover' => '+', 'diamond' => 'v', 'square' => '#', 'star' => '*', 'x' => 'x'];
 
   public static function shapes() {
     return [self::circle(), self::clover(), self::diamond(), self::square(), self::star(), self::x()];
