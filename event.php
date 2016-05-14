@@ -17,7 +17,7 @@ class Event {
       $this->l()->p($board);
       $this->l()->p($scores);
     } else {
-      $this->l("$player changes his letters. Hand is {$player->hand()}");
+      $this->l("$player changes his letters. Hand is now {$player->hand()}");
     }
     $this->l();
   }
