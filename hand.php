@@ -1,6 +1,8 @@
 <?php
 
 class Hand {
+  use Tiles;
+
   public function __construct(array $tiles = []) {
     Assert::type($tiles, Tile);
     $this->tiles = $tiles;
