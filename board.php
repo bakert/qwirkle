@@ -42,7 +42,7 @@ class Board {
     return $this->score($move);
   }
 
-  private function applyWithoutChecks(Move $move, $updateLocations = false) {
+  public function applyWithoutChecks(Move $move, $updateLocations = false) {
     foreach ($move->placements as $placement) {
       $this->removeLocation($placement->point());
       list($x, $y) = [$placement->point()->x(), $placement->point()->y()];
@@ -69,7 +69,7 @@ class Board {
     }
     $sharedProperties = (new Hand($neighbors))->sharedProperties();
     if ($sharedProperties !== null) {
-      $this->locations[(string)$pointToAdd] = ['point' => $pointToAdd, 'sharedProperties' => $sharedProperties];
+      $this->locations[(string)$pointToAdd] = new Location($pointToAdd, $sharedProperties);
     }
   }
 
@@ -165,3 +165,4 @@ class Board {
     return $s;
   }
 }
+

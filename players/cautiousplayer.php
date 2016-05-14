@@ -1,9 +1,10 @@
 <?php
 
 class CautiousPlayer extends Player {
-  public function evaluate(array $tiles, Move $move, Board $board, $bagIsEmpty) {
+  public function evaluate(Hand $hand, Move $move, Board $board, $bagIsEmpty) {
     $score = $board->score($move);
-    if (count($move->placements()) === count($tiles) && $bagIsEmpty) {
+    //BAKERT bug here ... we have already removed the non unique tiles
+    if (count($move->placements()) === $hand->size() && $bagIsEmpty) {
       $score += Score::FINISHING_BONUS;
     } elseif ($this->enablesQwirkle($move, $board, $bagIsEmpty) && $score < 9) {
       $score -= 3.5;
