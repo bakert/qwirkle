@@ -18,6 +18,10 @@ class Scores {
     }
   }
 
+  public function scores() {
+    return $this->scores;
+  }
+
   public function __toString() {
     list($longestName, $longestScore) = [0, 0];
     foreach ($this->scores as $score) {

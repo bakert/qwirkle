@@ -4,6 +4,8 @@ class Game {
   const HAND_SIZE = 6;
   const MAX_ROUNDS_WITHOUT_SCORING = 10;
 
+  private $scores;
+
   public function __construct(array $players, $tiles = null) {
     Assert::type($players, Player);
     $this->players = $players;
@@ -15,7 +17,7 @@ class Game {
   }
 
   public function go() {
-    list($event, $bag, $board, $scores) = [new Event(), new Bag($this->tiles), new Board(), new Scores($this->players)];
+    list($event, $bag, $board, $this->scores) = [new Event(), new Bag($this->tiles), new Board(), new Scores($this->players)];
     foreach ($this->players as $player) {
       $hand = new Hand($bag->draw(self::HAND_SIZE));
       $player->setHand($hand);
@@ -39,9 +41,9 @@ class Game {
         }
         $player->play($move);
         $score = $board->apply($move);
-        $scores->score($player, $score);
+        $this->scores->score($player, $score);
         $roundScore += $score;
-        $event->move($player, $move, $score, $board, $scores);
+        $event->move($player, $move, $score, $board, $this->scores);
         if ($move->length() > 0 && !$bag->isEmpty()) {
           $tiles = $bag->draw($move->length());
           $player->draw($tiles);
@@ -49,7 +51,7 @@ class Game {
         }
         foreach ($players as $player) {
           if ($player->hand->size() === 0) {
-            $scores->score($player, 6);
+            $this->scores->score($player, 6);
             $event->playerHasFinished($player);
             $finished = true;
             break 2;
@@ -66,6 +68,10 @@ class Game {
       }
     }
     $event->gameEnd($scores);
+  }
+
+  public function scores() {
+    return $this->scores;
   }
 
   private function determineStartingPlayer(array $players) {
