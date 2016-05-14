@@ -17,7 +17,7 @@ class Placement {
   public function isLegal(Board $board) {
     $lines = $this->lines($board);
     foreach ($lines as $line) {
-      if (!$line->isLegal($line)) {
+      if (!$line->isLegal()) {
         return false;
       }
     }
