@@ -120,10 +120,7 @@ class Player {
   private function bestMoveWith(Hand $hand, Board $board) {
     list($max, $bestMove) = [0, new Move([])];
     foreach ($board->attachmentLocations() as $location) {
-      //BAKERT shoulld location be a class and does that add much overhead?
-      // Skip if a quick look convinces us the move will be illegal. For speed.
-      // Shaves about 20s off a 48s game.
-      if (!$this->quickCheckLocation($location, $hand)) {
+      if (!$this->rejectQuicklyIfPossible($location, $hand)) {
         continue;
       }
       foreach ($this->permutations($hand, $board, $location->point()) as $move) {
@@ -137,7 +134,7 @@ class Player {
     return $bestMove;
   }
 
-  private function quickCheckLocation(Location $location, Hand $hand) {
+  private function rejectQuicklyIfPossible(Location $location, Hand $hand) {
     foreach ($hand->sharedProperties() as $property) {
       if (in_array($property, $location->sharedProperties())) {
         return true;
@@ -160,11 +157,6 @@ class Player {
             $steps -= 1;
           }
         }
-        //BAKERT perf improvement - don't try illegal tiles in the initial slot
-        //BAKERT at some point in here we know every tile and every point we are going to lay
-        // but we will do things like try a set of 4 xs in every possible permutation against a circle
-
-        //BAKERT experimental dual mode to reduce worst case but keep faster easy case
         if ($hand->size() >= 3 /* make this a constant BAKERT */) {
           $move = $this->tryFit($hand->tiles(), $board, $p, $direction);
           if ($move !== null) {
