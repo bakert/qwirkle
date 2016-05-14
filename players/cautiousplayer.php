@@ -16,7 +16,7 @@ class CautiousPlayer extends Player {
       if ($line->length() === count(Color::colors()) - 1) {
         $missingPiece = $this->missingPieces($line)[0];
         if ($this->notAccountedFor($missingPiece, $board)) {
-          return false;
+          return true;
         }
       }
     }
