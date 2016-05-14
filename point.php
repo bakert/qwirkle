@@ -31,7 +31,7 @@ class Point {
     return new Point($x, $y);
   }
 
-  public function adjacents() {
+  public function neighbors() {
     return [
       $this->next(Direction::up()),
       $this->next(Direction::right()),
