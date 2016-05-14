@@ -29,6 +29,7 @@ class Game {
     while (!$finished) {
       $roundScore = 0;
       foreach ($players as $player) {
+        $event->startTurn($player);
         $move = $player->move($board, $bag->isEmpty());
         if ($move->changeTiles()) {
           $bag->discard($player->discard());
