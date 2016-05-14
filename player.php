@@ -1,6 +1,8 @@
 <?php
 
 class Player {
+  const MAX_SIZE_TO_TRY_ALL_PERMUTATIONS = 2;
+
   public function __construct($name) {
     $this->name = $name;
     $this->hand = new Hand();
@@ -157,7 +159,7 @@ class Player {
             $steps -= 1;
           }
         }
-        if ($hand->size() >= 3 /* make this a constant BAKERT */) {
+        if ($hand->size() > self::MAX_SIZE_TO_TRY_ALL_PERMUTATIONS) {
           $move = $this->tryFit($hand->tiles(), $board, $p, $direction);
           if ($move !== null) {
             $moves[] = $move;
