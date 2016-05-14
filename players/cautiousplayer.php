@@ -35,14 +35,14 @@ class CautiousPlayer extends Player {
     $missing = [];
     if (get_class($sharedProperty) === Shape) {
       foreach (Color::colors() as $color) {
-        $tile = Tile::getTile($color, $sharedProperty);
+        $tile = Tile::get($color, $sharedProperty);
         if (!$line->contains($tile)) {
           $missing[] = $tile;
         }
       }
     } elseif (get_class($sharedProperty) === Color) {
       foreach (Shape::shapes() as $shape) {
-        $tile = Tile::getTile($sharedProperty, $shape);
+        $tile = Tile::get($sharedProperty, $shape);
         if (!$line->contains($tile)) {
           $missing[] = $tile;
         }

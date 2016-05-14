@@ -20,7 +20,7 @@ class Tile {
     return self::$allTiles;
   }
 
-  public static function getTile(Color $color, Shape $shape) {
+  public static function get(Color $color, Shape $shape) {
     foreach (self::allTiles() as $tile) {
       if ($tile->color() === $color && $tile->shape() === $shape) {
         return $tile;
