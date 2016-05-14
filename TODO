@@ -29,3 +29,26 @@ Improvements
   // echo "----------\n";
   //fgets(STDIN);
 - Some way to treat colors and shapes as "properties" generally when looking for shared property.
+- Change diamond symbol to 'v' from '^'. The caret gives the illusion of a space. Regen TestGames to get the new symbol.
+
+Performance
+===========
+
+time php -f qwirkle.php >/dev/null
+
+  $players = [
+    new Player('Qwirky'),
+    new Player('Kwirkster'),
+    new Player('Mr. Three'),
+    new CautiousPlayer('Cautious Player')
+  ];
+  $game = new Game($players, unserialize(TestGames::FIRST));
+
+- Initial timing 48s
+- After quickCheckLocation = 28s
+- After cache locations in board and update on apply = 20s
+- Add a lot of timng calls = 28s
+- After cache locations AND shared properties in board and updated on apply = 14s
+- Moving isLegal check into permutations = 13s
+- Break out of orderings loop when we find a legal move = 12s
+- Remove Timer calls = 9s
