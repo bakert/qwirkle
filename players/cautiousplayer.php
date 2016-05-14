@@ -5,17 +5,34 @@ class CautiousPlayer extends Player {
     $score = $board->score($move);
     if (count($move->placements()) === $this->hand()->size() && $bagIsEmpty) {
       $score += Score::FINISHING_BONUS;
-    } elseif ($this->enablesQwirkle($move, $board, $bagIsEmpty) && $score < 9) {
-      $score -= 3.5;
+    } elseif ($this->enablesQwirkle($move, $board) && $score < 9) {
+      $score -= 3.5; //BAKERT this modifier should be based on the number of players
+    } elseif ($this->enablesDoubleQwirkle($move, $board) && $score < 9) {
+      $score -= 0.5;
     }
     return $score;
   }
 
-  private function enablesQwirkle(Move $move, Board $board, $bagIsEmpty) {
+  // BAKERT combine these two enables functions can be shared
+  // BAKERT we don't actually look if the qwirkle is playable and that's bad ... maybe the squares would not be legal.
+  private function enablesQwirkle(Move $move, Board $board) {
     foreach ($move->lines($board) as $line) {
       if ($line->length() === count(Color::colors()) - 1) {
         $missingPiece = $this->missingPieces($line)[0];
         if ($this->notAccountedFor($missingPiece, $board)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private function enablesDoubleQwirkle(Move $move, Board $board) {
+    foreach ($move->lines($board) as $line) {
+      if ($line->length() === count(Color::colors()) - 2) {
+        $missingPieces = $this->missingPieces($line);
+        if ($this->notAccountedFor($missingPiece[0], $board)
+          && $this->notAccountedFor($missingPiece[1], $board)) {
           return true;
         }
       }
