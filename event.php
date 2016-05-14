@@ -22,6 +22,10 @@ class Event {
     $this->l();
   }
 
+  public function startTurn(Player $player) {
+    $this->l("{$player} to play with hand of {$player->hand()}");
+  }
+
   public function __call($f, array $args) {
     $this->l("$f");
   }
