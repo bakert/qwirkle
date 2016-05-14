@@ -3,15 +3,9 @@ Improvements
 
 - Instead of arbitrarily placing the first longest line when starting, instead decide which would be best in some way.
 - Oldest player goes first in the event of a tie in starting length is not implemented. Instead it is random.
-- We potentially need an untrusted Player class that makes decisions and a trusted Player class that holds hand and score information rather than storing in arrays.
-- Instead of placing lines in arbitrary order for starting move we should place them in a way that favors the rest of our hand.
-- We are currently very trusting of Player that he has the tiles he says he has. We should separate out the stragey and the admin.
-- Starting move is always color-based never shaped-based.
-- You can't use two of the same tile.
+- We are currently very trusting of Player that he has the tiles he says he has. We should separate out the strategy and the admin.
 - Algorithm just maximizes points for now, very naive. Need to look at giving away good scoring opportunities, changing tiles, dumping dupes and keeping potentially good tiles as well at least.
-- usefulSets should return pairs, triples, etc. not just single tiles and max tiles sharing a property.
 - When the computer changes letters it should be strategic about it.
-- Nonrandom mode that skips all three shuffles.
 - Don't pass board around inside board at all. Just clone it where necessary.
 - Board->score uses applyWithoutChecks rather than apply. Why are we scoring something that might be illegal? Can we speed up by cutting it earlier?
 - Do you return to the bag then draw? Or set aside and then draw?
@@ -21,32 +15,16 @@ Improvements
   * Mustn't overlay a tile
   * All lines formed must be legal
 - A "show thinking" flag that shows the board of every legal move considered.
-  //echo "For $direction $i $point ($tilesHand) ...\n";
+  // echo "For $direction $i $point ($tilesHand) ...\n";
   // echo "Considering move: " . end($moves) . " with a score of " . $board->score(end($moves)) . "\n";
   // $displayBoard = clone $board;
   // $displayBoard->applyWithoutChecks(end($moves));
   // echo $displayBoard;
   // echo "----------\n";
-  //fgets(STDIN);
+  // fgets(STDIN);
 - Some way to treat colors and shapes as "properties" generally when looking for shared property.
 - Change diamond symbol to 'v' from '^'. The caret gives the illusion of a space. Regen TestGames to get the new symbol.
-- When we introduced the performance improvement of not checking all orderings once a legal move was found we radically changed the outcome of TestGames::FIRST.
-
-  Before changes:
-
-  Qwirky           79
-  Kwirkster        84
-  Mr. Three       116
-  Cautious Player 109
-
-  After changes:
-
-  Qwirky          105
-  Kwirkster       100
-  Mr. Three       100
-  Cautious Player  96
-
-This implies that the order you place your move in from amongst the available legal moves is important to the outcome. Leaving less opportunity for others and more for yourself should be a consideration of the AI.
+- When we introduced the performance improvement of not checking all orderings once a legal move was found we radically changed the outcome of TestGames::FIRST. This implies that the order you place your move in from amongst the available legal moves is important to the outcome. Leaving less opportunity for others and more for yourself should be a consideration of the AI.
 - Can we do something like tryFit for isLegal? Start at the attachment location and work outwards and reject sooner if possible?
 
 Performance
