@@ -31,6 +31,15 @@ class Point {
     return new Point($x, $y);
   }
 
+  public function adjacents() {
+    return [
+      $this->next(Direction::up()),
+      $this->next(Direction::right()),
+      $this->next(Direction::down()),
+      $this->next(Direction::left())
+    ];
+  }
+
   public function __toString() {
     return "({$this->x()}, {$this->y()})";
   }
