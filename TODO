@@ -38,8 +38,10 @@ time php -f qwirkle.php >/dev/null
     new CautiousPlayer('Cautious Player')
   ];
   $game = new Game($players, unserialize(TestGames::FIRST));
+  $game->go();
+  exit;
 
-- Initial timing 48s
+- Initial timing = 48s
 - After quickCheckLocation = 28s
 - After cache locations in board and update on apply = 20s
 - Add a lot of timng calls = 28s
