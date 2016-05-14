@@ -30,6 +30,23 @@ Improvements
   //fgets(STDIN);
 - Some way to treat colors and shapes as "properties" generally when looking for shared property.
 - Change diamond symbol to 'v' from '^'. The caret gives the illusion of a space. Regen TestGames to get the new symbol.
+- When we introduced the performance improvement of not checking all orderings once a legal move was found we radically changed the outcome of TestGames::FIRST.
+
+  Before changes:
+
+  Qwirky           79
+  Kwirkster        84
+  Mr. Three       116
+  Cautious Player 109
+
+  After changes:
+
+  Qwirky          105
+  Kwirkster       100
+  Mr. Three       100
+  Cautious Player  96
+
+This implies that the order you place your move in from amongst the available legal moves is important to the outcome. Leaving less opportunity for others and more for yourself should be a consideration of the AI.
 
 Performance
 ===========
@@ -52,3 +69,5 @@ time php -f qwirkle.php >/dev/null
 - Moving isLegal check into permutations = 13s
 - Break out of orderings loop when we find a legal move = 12s
 - Remove Timer calls = 9s
+- Only update locations when calling apply not all applyWithoutChecks = 5s
+- tryFit for 3+ tiles to avoid checking endless illegal options = 4.2s
