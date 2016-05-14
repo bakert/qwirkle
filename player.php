@@ -2,6 +2,7 @@
 
 class Player {
   const MAX_SIZE_TO_TRY_ALL_PERMUTATIONS = 2;
+  const MAX_SIZE_TO_IGNORE_LEGALITY = 2;
 
   public function __construct($name) {
     $this->name = $name;
@@ -200,8 +201,7 @@ class Player {
       $placement = new Placement($point, $tile);
       $newRawMove = array_merge($rawMove, [$placement]);
       $move = new Move($newRawMove);
-      //BAKERT experiment with these numbers
-      if ((count($rawMove) <= 2 && count($tiles) > 1) || $board->isLegal($move)) {
+      if ((count($rawMove) <= self::MAX_SIZE_TO_IGNORE_LEGALITY && count($tiles) > 1) || $board->isLegal($move)) {
         $pos = array_search($tile, $tiles);
         unset($tiles[$pos]);
         $board = clone $board;
