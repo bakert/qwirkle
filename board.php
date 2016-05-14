@@ -5,6 +5,7 @@ class Board {
   const MIN_VIEWPORT_SIZE = 0;
 
   private $board;
+  private $locations = [];
 
   public function __construct(Board $board = null) {
     if (!$board) {
@@ -42,6 +43,7 @@ class Board {
   }
 
   private function applyWithoutChecks(Move $move) {
+    $this->locations = [];
     foreach ($move->placements as $placement) {
       list($x, $y) = [$placement->point()->x(), $placement->point()->y()];
       $this->board[$y][$x] = $placement->tile();
@@ -61,23 +63,27 @@ class Board {
   }
 
   public function attachmentLocations() {
-    $locations = [];
+    if ($this->locations) {
+      return $this->locations;
+    }
     for ($y = 0; $y < count($this->board); $y++) {
       for ($x = 0; $x < count($this->board[$y]); $x++) {
         $point = new Point($x, $y);
-        if (!$this->spotTaken($point) && $this->adjacentIsOccupied($point)) {
-          $locations[] = $point;
+        if (!$this->spotTaken($point) && $this->anyAdjacentIsOccupied($point)) {
+          $this->locations[] = $point;
         }
       }
     }
-    return $locations;
+    return $this->locations;
   }
 
-  private function adjacentIsOccupied(Point $point) {
-    return isset($this->board[$point->y() - 1][$point->x()]) 
-      || isset($this->board[$point->y() + 1][$point->x()]) 
-      || isset($this->board[$point->y()][$point->x() - 1]) 
-      || isset($this->board[$point->y()][$point->x() + 1]);
+  private function anyAdjacentIsOccupied(Point $startPoint) {
+    foreach ($startPoint->adjacents($this) as $point) {
+      if ($this->at($point) !== null) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public function isEmpty() {
