@@ -86,8 +86,7 @@ class Player {
 
   protected function evaluate(Hand $hand, Move $move, Board $board, $bagIsEmpty) {
     $score = $board->score($move);
-    //BAKERT bug here ... we have already removed the non unique tiles
-    if (count($move->placements()) === $hand->size() && $bagIsEmpty) {
+    if (count($move->placements()) === $this->hand()->size() && $bagIsEmpty) {
       $score += Score::FINISHING_BONUS;
     }
     return $score;
