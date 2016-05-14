@@ -20,7 +20,7 @@ class Board {
 
   public function isLegal(Move $move) {
     foreach ($move->placements() as $placement) {
-      if ($this->spotTaken($placement->point())) {
+      if ($this->at($placement->point()) !== null) {
         return false;
       }
     }
@@ -82,10 +82,6 @@ class Board {
       return null;
     }
     return $this->board[$point->y()][$point->x()];
-  }
-
-  public function spotTaken(Point $point) {
-    return isset($this->board[$point->y()][$point->x()]);
   }
 
   public function attachmentLocations() {
