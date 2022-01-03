@@ -27,12 +27,13 @@ class CautiousPlayer extends Player {
     return false;
   }
 
+  // BAKERT It's possible that this doesn't work as it never seems to return true.
   private function enablesDoubleQwirkle(Move $move, Board $board) {
     foreach ($move->lines($board) as $line) {
       if ($line->length() === count(Color::colors()) - 2) {
         $missingPieces = $this->missingPieces($line);
-        if ($this->notAccountedFor($missingPiece[0], $board)
-          && $this->notAccountedFor($missingPiece[1], $board)) {
+        if ($this->notAccountedFor($missingPieces[0], $board)
+          && $this->notAccountedFor($missingPieces[1], $board)) {
           return true;
         }
       }
