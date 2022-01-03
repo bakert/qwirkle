@@ -32,7 +32,7 @@ class Player {
   }
 
   public function startingMove(array $tiles) {
-    Assert::type($tiles, Tile);
+    Assert::type($tiles, 'Tile');
     $lines = [];
     foreach ($tiles as $tile) {
       if (!isset($lines[$tile->color()->name()])) {

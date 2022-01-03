@@ -4,7 +4,7 @@ class Line {
   use Tiles;
 
   public function __construct(array $placements = []) {
-    Assert::type($placements, Placement);
+    Assert::type($placements, 'Placement');
     $this->placements = $placements;
   }
 

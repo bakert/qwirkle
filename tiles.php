@@ -14,6 +14,7 @@ trait Tiles {
 
   public function sharedProperties() {
     $sharedProperty = null;
+    $sharedProperties = [];
     foreach (Color::colors() as $color) {
       foreach ($this->tiles() as $tile) {
         if ($sharedProperty === null || $sharedProperty === $tile->color()) {

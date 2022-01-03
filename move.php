@@ -4,7 +4,7 @@ class Move {
   const STARTING_INDEX = 99;
 
   public function __construct($placements) {
-    Assert::type($placements, Placement);
+    Assert::type($placements, 'Placement');
     $this->placements = $placements;
   }
 

@@ -57,7 +57,7 @@ class Board {
         }
       }
     }
-    return $board;
+    return $this->board;
   }
 
   private function addLocation(Point $pointToAdd) {
@@ -104,7 +104,7 @@ class Board {
     $board = clone $this;
     $board->applyWithoutChecks($move);
     $lines = $move->lines($board);
-    $points = 0;
+    $score = 0;
     foreach ($lines as $line) {
       if ($line->length() === count(Color::colors())) {
         $score += Score::QWIRKLE_BONUS;
@@ -147,6 +147,7 @@ class Board {
     $leftmost -= 1;
     $rightmost += 2;
 
+    $s = '';
     for ($y = $highest; $y < $lowest; $y++) {
       $a = [];
       for ($x = $leftmost; $x < $rightmost; $x++) {

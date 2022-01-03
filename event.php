@@ -2,7 +2,7 @@
 
 class Event {
   public function draw(Player $player, array $tiles) {
-    Assert::type($tiles, Tile);
+    Assert::type($tiles, 'Tile');
     $hand = new Hand($tiles); 
     $this->p("{$player} draws {$hand}");
     if (count($tiles) < $player->hand()->size()) {

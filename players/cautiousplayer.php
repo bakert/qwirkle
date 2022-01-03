@@ -49,14 +49,14 @@ class CautiousPlayer extends Player {
       throw new IllegalArgumentException("This line does not have a shared property ($line).");
     }
     $missing = [];
-    if (get_class($sharedProperty) === Shape) {
+    if (get_class($sharedProperty) === 'Shape') {
       foreach (Color::colors() as $color) {
         $tile = Tile::get($color, $sharedProperty);
         if (!$line->contains($tile)) {
           $missing[] = $tile;
         }
       }
-    } elseif (get_class($sharedProperty) === Color) {
+    } elseif (get_class($sharedProperty) === 'Color') {
       foreach (Shape::shapes() as $shape) {
         $tile = Tile::get($sharedProperty, $shape);
         if (!$line->contains($tile)) {

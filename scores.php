@@ -4,7 +4,7 @@ class Scores {
   private $scores = [];
 
   public function __construct(array $players) {
-    Assert::type($players, Player);
+    Assert::type($players, 'Player');
     foreach ($players as $player) {
       $this->scores[] = new Score($player, 0);
     }

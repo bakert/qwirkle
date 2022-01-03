@@ -7,7 +7,7 @@ class Game {
   private $scores;
 
   public function __construct(array $players, $tiles = null) {
-    Assert::type($players, Player);
+    Assert::type($players, 'Player');
     $this->players = $players;
     $this->random = $tiles === null;
     $this->tiles = $tiles;
@@ -67,7 +67,7 @@ class Game {
         }
       }
     }
-    $event->gameEnd($scores);
+    $event->gameEnd($this->scores);
   }
 
   public function scores() {
